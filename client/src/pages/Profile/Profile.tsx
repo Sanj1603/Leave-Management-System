@@ -31,6 +31,13 @@ const Profile = () => {
 
   return (
     <>
+          <Button
+  startIcon={<ArrowBackIcon />}
+  variant="outlined"
+  sx={{ mb: 2 }}
+  onClick={() => navigate("/dashboard")}
+>
+</Button>
       <Typography
         variant="h5"
         sx={{
@@ -41,13 +48,7 @@ const Profile = () => {
       >
         MY PROFILE
       </Typography>
-       <Button
-  startIcon={<ArrowBackIcon />}
-  variant="outlined"
-  sx={{ mb: 2 }}
-  onClick={() => navigate("/dashboard")}
->
-</Button>
+ 
 
 
       <Paper
@@ -129,6 +130,20 @@ const Profile = () => {
 
               <Typography variant="h6">
                 {user.email}
+              </Typography>
+            </Box>
+                  <Divider />
+
+            <Box py={3}>
+              <Typography
+                color="text.secondary"
+                fontWeight={600}
+              >
+                PHONE
+              </Typography>
+
+              <Typography variant="h6">
+                {user.phone}
               </Typography>
             </Box>
 
