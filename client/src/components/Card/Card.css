@@ -1,0 +1,37 @@
+.employeeCards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.dashboardCard {
+    flex: 1;
+    min-width: 320px;
+    border-radius: 12px;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tableContainer {
+    margin-top: 24px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+
+    .employeeCards {
+        flex-direction: column;
+    }
+
+    .dashboardCard {
+        width: 100%;
+        min-width: 100%;
+    }
+
+}

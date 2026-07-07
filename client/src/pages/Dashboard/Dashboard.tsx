@@ -1,5 +1,7 @@
 import "./Dashboard.css";
 import "../../mock/users.tsx";
+import Cards from "../../components/Card/Card";
+
 const Dashboard = () => {
   const user =
     JSON.parse(localStorage.getItem("user") || "null") ||
@@ -17,30 +19,30 @@ const Dashboard = () => {
         <h2>Welcome, {user.name}</h2>
 
         <h3>Role : {user.role}</h3>
-
+<Cards role={user.role} />
         <br />
 
         {user.role === "Admin" && (
           <>
-            <h4>Admin Dashboard</h4>
+            {/* <h4>Admin Dashboard</h4>
 
             <ul>
               <li>Manage Employees</li>
               <li>Assign Managers</li>
               <li>View Reports</li>
-            </ul>
+            </ul> */}
           </>
         )}
 
         {user.role === "Manager" && (
           <>
-            <h4>Manager Dashboard</h4>
+            {/* <h4>Manager Dashboard</h4>
 
             <ul>
               <li>Approve Leave Requests</li>
               <li>View Team Leave Balance</li>
               <li>View Attendance</li>
-            </ul>
+            </ul> */}
           </>
         )}
 
