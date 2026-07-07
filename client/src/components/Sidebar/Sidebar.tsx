@@ -8,13 +8,14 @@ import {
   ListItemText, 
   Typography 
 } from '@mui/material';
-
+import { useNavigate } from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import HistoryIcon from '@mui/icons-material/History';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RateReviewIcon from '@mui/icons-material/RateReview';
+
 
 import './Sidebar.css';
 
@@ -69,7 +70,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
 ];
 
 export default function Sidebar({ userRole, activeItem, setActiveItem }: SidebarProps) {
-  
+ const navigate = useNavigate();
   // Filter out authorized buttons dynamically based on active session role data
   const filteredItems = SIDEBAR_ITEMS.filter((item) =>
     item.roles.includes(userRole)
@@ -83,7 +84,7 @@ export default function Sidebar({ userRole, activeItem, setActiveItem }: Sidebar
       </Typography>
       
       <Divider sx={{ mb: 1 }} />
-
+      
       <List disablePadding>
         {filteredItems.map((item) => {
           const isSelected = activeItem === item.text;
@@ -92,7 +93,38 @@ export default function Sidebar({ userRole, activeItem, setActiveItem }: Sidebar
               <ListItemButton
                 className="sidebar-list-item-btn"
                 selected={isSelected}
-                onClick={() => setActiveItem(item.text)}
+                onClick={() => {
+  setActiveItem(item.text);
+
+  switch (item.text) {
+    case "Dashboard":
+      navigate("/dashboard");
+      break;
+
+    case "Apply Leave":
+      navigate("/apply-leave");
+      break;
+
+    case "Leave History":
+      navigate("/leave-history");
+      break;
+
+    case "View Requests":
+      navigate("/view-requests");
+      break;
+
+    case "Notification":
+      navigate("/notification");
+      break;
+
+    case "Users / Profile":
+      navigate("/profile");
+      break;
+
+    default:
+      break;
+  }
+}}
               >
                 <ListItemIcon>
                   {item.icon}

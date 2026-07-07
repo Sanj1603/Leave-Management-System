@@ -1,0 +1,40 @@
+.apply-card {
+    background: white;
+    border-radius: 12px !important;
+    padding: 35px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08) !important;
+}
+
+.page-title {
+    color: #1A3E7A;
+    font-weight: bold !important;
+    margin-bottom: 8px !important;
+}
+
+.page-subtitle {
+    color: #666;
+    margin-bottom: 30px !important;
+}
+
+.leave-form {
+    width: 100%;
+}
+
+.leave-form .MuiTextField-root {
+    margin-bottom: 20px;
+}
+
+.button-group {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.button-group .MuiButton-contained {
+    background: #1A3E7A;
+}
+
+.button-group .MuiButton-contained:hover {
+    background: #163467;
+}

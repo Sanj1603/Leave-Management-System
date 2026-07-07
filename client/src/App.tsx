@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
-
+import ApplyLeave from "./pages/ApplyLeave/ApplyLeave";
 function App() {
   return (
     <Routes>
@@ -21,6 +21,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/apply-leave" element={<ApplyLeave />} />
 
     </Routes>
   );
