@@ -1,0 +1,219 @@
+/* ===========================
+   Global Styles
+=========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+/* ===========================
+   Login Container
+=========================== */
+
+.login-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* ===========================
+   Left Section
+=========================== */
+
+.login-left {
+  flex: 1;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 40px;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 170px;
+}
+
+.login-left h1 {
+  color: #1A3E7A;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 35px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ===========================
+   Text Fields
+=========================== */
+
+.login-form .MuiTextField-root {
+  margin-bottom: 18px;
+}
+
+.login-form .MuiOutlinedInput-root {
+  border-radius: 10px;
+}
+
+.login-form .MuiOutlinedInput-input {
+  padding: 14px;
+}
+
+/* ===========================
+   Remember Me & Forgot Password
+=========================== */
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0 25px;
+}
+
+.login-options .MuiFormControlLabel-root {
+  margin-left: 0;
+}
+
+.login-options .MuiFormControlLabel-label {
+  font-size: 14px;
+}
+
+.login-options a {
+  color: #1A3E7A;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-options a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   Login Button
+=========================== */
+
+.login-button {
+  width: 100%;
+  height: 50px;
+  background-color: #1A3E7A !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+.login-button:hover {
+  background-color: #163467 !important;
+}
+
+/* ===========================
+   Right Section
+=========================== */
+
+.login-right {
+  flex: 1;
+  background-color: #1A3E7A;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  text-align: center;
+}
+
+.login-right img {
+  width: 320px;
+  margin-bottom: 30px;
+}
+
+.login-right h2 {
+  font-size: 42px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.login-right p {
+  max-width: 450px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* ===========================
+   Forgot Password Dialog
+=========================== */
+
+.MuiDialog-paper {
+  border-radius: 12px !important;
+  padding: 10px;
+}
+
+.MuiDialogTitle-root {
+  font-weight: bold !important;
+  text-align: center;
+  font-size: 28px !important;
+}
+
+.MuiDialogContent-root {
+  padding: 25px !important;
+}
+
+.MuiDialogActions-root {
+  justify-content: center !important;
+  gap: 15px;
+  padding-bottom: 25px !important;
+}
+
+.MuiDialogActions-root button {
+  min-width: 110px;
+  border-radius: 8px !important;
+  text-transform: uppercase !important;
+  font-weight: bold !important;
+}
+
+.MuiDialogActions-root .MuiButton-contained {
+  background-color: #1A3E7A !important;
+}
+
+.MuiDialogActions-root .MuiButton-contained:hover {
+  background-color: #163467 !important;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 900px) {
+  .login-right {
+    display: none;
+  }
+
+  .login-left {
+    width: 100%;
+    flex: 1;
+  }
+
+  .login-left h1 {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .login-form {
+    max-width: 360px;
+  }
+}
