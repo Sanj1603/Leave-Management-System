@@ -5,7 +5,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ApplyLeave from "./pages/ApplyLeave/ApplyLeave";
 import LeaveHistory from "./pages/LeaveHistory/LeaveHistory";
-
+import Notification from "./pages/Notification/Notification";
 function App() {
   return (
     <Routes>
@@ -14,6 +14,9 @@ function App() {
         path="/"
         element={<Login />}
       />
+      
+
+<Route path="/notification" element={<Notification />} />
 
       <Route
         path="/dashboard"
