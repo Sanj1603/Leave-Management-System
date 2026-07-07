@@ -1,0 +1,37 @@
+.dashboard {
+    padding: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    min-height: 100vh;
+}
+
+.dashboard h1 {
+    color: #1A3E7A;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    width: 600px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card ul {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.card li {
+    margin-bottom: 10px;
+}

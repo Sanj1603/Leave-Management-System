@@ -60,34 +60,23 @@ const Login: React.FC = () => {
     toast.error("Invalid Credentials");
     return;
   }
+localStorage.removeItem("user");
+sessionStorage.removeItem("user");
 
   // Store logged-in user
   if (rememberMe) {
     localStorage.setItem("user", JSON.stringify(user));
   } else {
+    console.log(user);
     sessionStorage.setItem("user", JSON.stringify(user));
   }
 
   toast.success("Login Successful");
 
   // Navigate based on role
-  switch (user.role) {
-    case "Admin":
-      navigate("/admin");
-      break;
+  navigate("/dashboard");
+  };
 
-    case "Manager":
-      navigate("/manager");
-      break;
-
-    case "Employee":
-      navigate("/employee");
-      break;
-
-    default:
-      navigate("/");
-  }
-};
   const handleForgotPassword = () => {
     if (!forgotEmail.trim()) {
       toast.error("Please enter your email");
@@ -316,6 +305,6 @@ const Login: React.FC = () => {
 
     </div>
   );
-};
+}
 
 export default Login;
