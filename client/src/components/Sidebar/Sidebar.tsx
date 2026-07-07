@@ -15,8 +15,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RateReviewIcon from '@mui/icons-material/RateReview';
-
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import './Sidebar.css';
 
 // Define explicit valid user roles
@@ -67,6 +67,18 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: <AccountCircleIcon fontSize="small" />,
     roles: ['Employee', 'Manager', 'Admin'],
   },
+  
+{
+  text: 'Company Calendar',
+  icon: <CalendarMonthIcon fontSize="small" />,
+  roles: ['Employee', 'Manager', 'Admin'],
+},
+
+  {
+  text: 'Logout',
+  icon: <LogoutIcon fontSize="small" />,
+  roles: ['Employee', 'Manager', 'Admin'],
+},
 ];
 
 export default function Sidebar({ userRole, activeItem, setActiveItem }: SidebarProps) {
@@ -94,6 +106,14 @@ export default function Sidebar({ userRole, activeItem, setActiveItem }: Sidebar
                 className="sidebar-list-item-btn"
                 selected={isSelected}
                 onClick={() => {
+                  
+if (item.text === "Logout") {
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate("/");
+    return;
+  }
+
   setActiveItem(item.text);
 
   switch (item.text) {
@@ -119,6 +139,9 @@ export default function Sidebar({ userRole, activeItem, setActiveItem }: Sidebar
 
     case "Users / Profile":
       navigate("/profile");
+      break;
+    case "Company Calendar":
+      navigate("/company-calendar");
       break;
 
     default:

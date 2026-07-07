@@ -8,7 +8,7 @@ import LeaveHistory from "./pages/LeaveHistory/LeaveHistory";
 import Notification from "./pages/Notification/Notification";
 import Profile from "./pages/Profile/Profile";
 import ViewRequests from "./components/ViewRequests/ViewRequests";
-
+import CompanyCalendar from "./pages/CompanyCalendar/CompanyCalendar";
 function App() {
   return (
     <Routes>
@@ -51,6 +51,14 @@ function App() {
   element={
     <ProtectedRoute>
       <ViewRequests />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/company-calendar"
+  element={
+    <ProtectedRoute>
+      <CompanyCalendar />
     </ProtectedRoute>
   }
 />
