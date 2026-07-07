@@ -15,7 +15,8 @@
 
 .card {
     background: white;
-    width: 600px;
+    flex: 1;
+    min-width: 0;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0,0,0,.1);
@@ -37,4 +38,9 @@
 
 .card li {
     margin-bottom: 10px;
+}
+.dashboard-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
 }

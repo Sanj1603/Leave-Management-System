@@ -1,0 +1,68 @@
+/* ===========================
+   Sidebar Styles
+=========================== */
+
+.sidebar-container {
+  width: 260px;
+  min-width: 260px;
+  min-height: calc(100vh - 100px);
+  border-right: 1px solid #e0e0e0;
+  background: #fcfdfe;
+}
+
+.sidebar-header-label {
+  padding: 0 24px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1A3E7A; /* Matching primary corporate blue */
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* Custom MUI overrides using your class naming strategy */
+.sidebar-list-item-btn {
+  padding: 12px 24px !important;
+  color: #4A5568 !important; /* Muted gray text for unselected state */
+}
+
+.sidebar-list-item-btn .MuiListItemIcon-root {
+  min-width: 40px !important;
+  color: #718096 !important; /* Muted gray for default icons */
+  transition: color 0.2s ease;
+}
+
+/* Hover State */
+.sidebar-list-item-btn:hover {
+  background-color: rgba(26, 62, 122, 0.04) !important;
+  color: #1A3E7A !important;
+}
+
+.sidebar-list-item-btn:hover .MuiListItemIcon-root {
+  color: #1A3E7A !important;
+}
+
+/* Selected Active State */
+.sidebar-list-item-btn.Mui-selected {
+  background-color: rgba(26, 62, 122, 0.08) !important; /* Light blue tint tint */
+  color: #1A3E7A !important;
+  border-right: 4px solid #1A3E7A; /* Adds a professional active marker indicator */
+}
+
+.sidebar-list-item-btn.Mui-selected .MuiListItemIcon-root {
+  color: #1A3E7A !important;
+}
+
+.sidebar-list-item-text {
+  font-weight: 500 !important;
+}
+
+.sidebar-list-item-btn.Mui-selected .sidebar-list-item-text {
+  font-weight: 700 !important; /* Bolder text for active state */
+}
+
+/* Dropdown Sandbox styling for role testing */
+.role-testing-sandbox {
+  padding: 16px;
+  background-color: #f7fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
