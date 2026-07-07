@@ -1,99 +1,92 @@
 import "./Card.css";
 
-import { useState } from "react";
-
 import {
   Box,
   Card,
   CardContent,
   Typography,
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  IconButton,
-  Menu,
-  MenuItem,
 } from "@mui/material";
 
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface CardProps {
   role: string;
 }
 
-const rows = [
-  {
-    employee: "EMP001",
-    remaining: 12,
-    approved: 5,
-    pending: 2,
-    rejected: 1,
+const leaveData = {
+  Employee: {
+    casual: 6,
+    earned: 14,
   },
-  {
-    employee: "EMP002",
-    remaining: 10,
-    approved: 4,
-    pending: 1,
-    rejected: 0,
+  Manager: {
+    casual: 8,
+    earned: 18,
   },
-  {
-    employee: "EMP003",
-    remaining: 8,
-    approved: 6,
-    pending: 1,
-    rejected: 2,
+  Admin: {
+    casual: 10,
+    earned: 20,
   },
-];
+};
 
 const Cards = ({ role }: CardProps) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const data = leaveData[role as keyof typeof leaveData];
 
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
- 
-
-  if (role === "Employee") {
-    return (
-      <Box className="employeeCards">
-        <Card className="dashboardCard">
-          <CardContent>
-            <Box className="cardHeader">
-              <Typography variant="h6">
-                Leave Balance
-              </Typography>
-
-              <EventAvailableIcon color="primary" />
-            </Box>
-
-            <Typography
-              variant="h3"
-              color="primary"
-              sx={{ mt: 3 }}
-            >
-              12
+  return (
+    <Box className="employeeCards">
+      {/* Casual Leave Card */}
+      <Card className="dashboardCard">
+        <CardContent>
+          <Box className="cardHeader">
+            <Typography variant="h6">
+              Casual Leaves
             </Typography>
 
-            <Typography color="text.secondary">
-              Days Remaining
-            </Typography>
-          </CardContent>
-        </Card>
+            <EventAvailableIcon color="primary" />
+          </Box>
 
+          <Typography
+            variant="h3"
+            color="primary"
+            sx={{ mt: 3 }}
+          >
+            {data.casual}
+          </Typography>
+
+          <Typography color="text.secondary">
+            Available
+          </Typography>
+        </CardContent>
+      </Card>
+
+      {/* Earned Leave Card */}
+      <Card className="dashboardCard">
+        <CardContent>
+          <Box className="cardHeader">
+            <Typography variant="h6">
+              Earned Leaves
+            </Typography>
+
+            <EventAvailableIcon color="primary" />
+          </Box>
+
+          <Typography
+            variant="h3"
+            color="primary"
+            sx={{ mt: 3 }}
+          >
+            {data.earned}
+          </Typography>
+
+          <Typography color="text.secondary">
+            Available
+          </Typography>
+        </CardContent>
+      </Card>
+
+      {/* Employee Only */}
+      {role === "Employee" && (
         <Card className="dashboardCard">
           <CardContent>
             <Typography variant="h6">
@@ -113,117 +106,7 @@ const Cards = ({ role }: CardProps) => {
             </Button>
           </CardContent>
         </Card>
-      </Box>
-    );
-  }
-
-  return (
-    <Box className="tableContainer">
-      <Typography
-        variant="h5"
-        sx={{ mb: 2 }}
-      >
-        Employee Leave Summary
-      </Typography>
-
-      <TableContainer component={Paper}>
-        <Table>
-
-          <TableHead>
-            <TableRow>
-
-              <TableCell>
-                <b>Employee</b>
-              </TableCell>
-
-              <TableCell align="center">
-                <b>Remaining</b>
-              </TableCell>
-
-              <TableCell align="center">
-                <b>Approved</b>
-              </TableCell>
-
-              <TableCell align="center">
-                <b>Pending</b>
-              </TableCell>
-
-              <TableCell align="center">
-                <b>Rejected</b>
-              </TableCell>
-
-              <TableCell align="center">
-                <b>Action</b>
-              </TableCell>
-
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-
-            {rows.map((row) => (
-              <TableRow key={row.employee}>
-
-                <TableCell>{row.employee}</TableCell>
-
-                <TableCell align="center">
-                  {row.remaining}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.approved}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.pending}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.rejected}
-                </TableCell>
-
-                <TableCell align="center">
-
-                  {role === "Manager" ? (
-                    <>
-                      <IconButton onClick={handleClick}>
-                        <MoreVertIcon />
-                      </IconButton>
-
-                      <Menu
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                      >
-                        <MenuItem onClick={handleClose}>
-                          Approve
-                        </MenuItem>
-
-                        <MenuItem onClick={handleClose}>
-                          Reject
-                        </MenuItem>
-
-                        <MenuItem onClick={handleClose}>
-                          Comment
-                        </MenuItem>
-
-                      </Menu>
-                    </>
-                  ) : (
-                    <Button variant="outlined">
-                      Manage
-                    </Button>
-                  )}
-
-                </TableCell>
-
-              </TableRow>
-            ))}
-
-          </TableBody>
-
-        </Table>
-      </TableContainer>
+      )}
     </Box>
   );
 };
