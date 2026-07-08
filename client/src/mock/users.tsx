@@ -6,6 +6,7 @@ import type {  MockUser } from "../types";
 //   password: string;
 //   role: "Employee" | "Manager" | "Admin";
 //   phone: string;
+
 // }
 
 export const mockUsers: MockUser[] = [
@@ -17,6 +18,7 @@ export const mockUsers: MockUser[] = [
     role: "Employee",
     phone: "123-456-7890",
     address:"Bangalore",
+    department: "Development",
   },
   {
     id: 2,
@@ -26,6 +28,7 @@ export const mockUsers: MockUser[] = [
     role: "Manager",
     phone: "987-654-3210",
     address:"Bangalore",
+    department: "Management",
   },
   {
     id: 3,
@@ -35,5 +38,6 @@ export const mockUsers: MockUser[] = [
     role: "Admin",
     phone: "123-456-7890",
     address:"Bangalore",
+    department: "Administration",
   },
 ];

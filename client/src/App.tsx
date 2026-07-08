@@ -8,7 +8,7 @@ import Notification from "./pages/Notification/Notification";
 import Profile from "./pages/Profile/Profile";
 import CompanyCalendar from "./pages/CompanyCalendar/CompanyCalendar";
 import ViewRequests from "./components/ViewRequests/ViewRequests";
-
+import Attendance from "./pages/Attendance/Attendance";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -29,6 +29,7 @@ function App() {
         <Route path="/leave-history" element={<LeaveHistory />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/attendance" element={<Attendance />} />
         <Route path="/company-calendar" element={<CompanyCalendar />} />
         <Route path="/view-requests" element={<ViewRequests />} />
       </Route>

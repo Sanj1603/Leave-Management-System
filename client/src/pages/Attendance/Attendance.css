@@ -1,0 +1,74 @@
+.attendance-card{
+    padding:30px;
+    border-radius:12px !important;
+}
+
+.attendance-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.attendance-title{
+    color:#1A3E7A;
+    font-weight:700 !important;
+}
+
+.attendance-subtitle{
+    color:#6b7280;
+    margin-top:5px !important;
+}
+
+.attendance-date{
+    color:#6b7280;
+    font-size:15px !important;
+}
+
+.attendance-table-head{
+    background:#f5f7fa;
+}
+
+.status-present{
+    background:#d4edda;
+    color:#155724;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.status-absent{
+    background:#f8d7da;
+    color:#721c24;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.status-pending{
+    background:#ececec;
+    color:#666;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.attendance-btn{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:30px;
+}
+
+.attendance-btn button{
+    background:#1A3E7A;
+    text-transform:none;
+    border-radius:8px;
+    padding:10px 24px;
+}
+
+.attendance-btn button:hover{
+    background:#15325f;
+}

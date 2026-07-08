@@ -68,6 +68,11 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: <AccountCircleIcon fontSize="small" />,
     roles: ['Employee', 'Manager', 'Admin'],
   },
+  {
+    text: 'Attendance',
+    icon: <AccountCircleIcon fontSize="small" />,
+    roles: ['Manager', 'Admin'],
+  },
   
 {
   text: 'Company Calendar',
@@ -128,6 +133,10 @@ if (item.text === "Logout") {
 
     case "Leave History":
       navigate("/leave-history");
+      break;
+    
+    case "Attendance":
+      navigate("/attendance");
       break;
 
     case "View Requests":

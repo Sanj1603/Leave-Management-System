@@ -39,4 +39,5 @@ export interface MockUser {
   role: UserRole;
   phone: string;
   address:string;
+  department: string;
 }

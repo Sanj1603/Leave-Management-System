@@ -28,22 +28,22 @@ const Profile = () => {
     JSON.parse(localStorage.getItem("user") || "null") ||
     JSON.parse(sessionStorage.getItem("user") || "null");
 
-  if (!storedUser) {
+  const [user, setUser] = useState(storedUser);
+  const [phone, setPhone] = useState(storedUser?.phone || "");
+  const [profileImage, setProfileImage] = useState(
+    storedUser?.profileImage || ""
+  );
+  const [address, setAddress] = useState(storedUser?.address || "");
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  if (!user) {
     return (
       <Typography variant="h6">
         User not found.
       </Typography>
     );
   }
-
-  const [user, setUser] = useState(storedUser);
-  const [phone, setPhone] = useState(user.phone || "");
-  const [profileImage, setProfileImage] = useState(
-    user.profileImage || ""
-  );
-  const [address, setAddress] = useState(user.address || "");
-
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>
