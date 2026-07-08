@@ -1,7 +1,11 @@
-.profile-page{
-    width:100%;
-    padding:32px;
+
+
+.profile-page {
+    flex: 1;
+    padding: 20px;
+    max-width: 100%;
 }
+
 
 .profile-title{
     color:#1A3E7A;
@@ -23,11 +27,14 @@
     background:#1A3E7A;
     border-radius:10px;
 }
-.profile-card{
-    width:100%;
-    border-radius:16px !important;
-    overflow:hidden;
+
+.profile-card {
+    width: 100%;
+    min-height: 650px;
+    border-radius: 16px !important;
+    overflow: hidden;
 }
+
 
 .profile-card .MuiCardContent-root{
     padding:40px !important;

@@ -38,4 +38,5 @@ export interface MockUser {
   password: string;
   role: UserRole;
   phone: string;
+  address:string;
 }

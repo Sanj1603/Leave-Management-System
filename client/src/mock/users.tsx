@@ -16,6 +16,7 @@ export const mockUsers: MockUser[] = [
     password: "123456",
     role: "Employee",
     phone: "123-456-7890",
+    address:"Bangalore",
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ export const mockUsers: MockUser[] = [
     password: "123456",
     role: "Manager",
     phone: "987-654-3210",
+    address:"Bangalore",
   },
   {
     id: 3,
@@ -32,5 +34,6 @@ export const mockUsers: MockUser[] = [
     password: "123456",
     role: "Admin",
     phone: "123-456-7890",
+    address:"Bangalore",
   },
 ];
