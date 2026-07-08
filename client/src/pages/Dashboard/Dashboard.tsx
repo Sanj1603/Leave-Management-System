@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Button } from "@mui/material";
 import "./Dashboard.css";
 import Cards from "../../components/Card/Card";
 
@@ -5,6 +7,23 @@ const Dashboard = () => {
   const user =
     JSON.parse(localStorage.getItem("user") || "null") ||
     JSON.parse(sessionStorage.getItem("user") || "null");
+const [isCheckedIn, setIsCheckedIn] = useState(
+    localStorage.getItem("isCheckedIn") === "true"
+  );
+
+  if (!user) return null;
+
+  const handleCheckIn = () => {
+    setIsCheckedIn(true);
+    localStorage.setItem("isCheckedIn", "true");
+    alert("Checked In Successfully");
+  };
+
+  const handleCheckOut = () => {
+    setIsCheckedIn(false);
+    localStorage.setItem("isCheckedIn", "false");
+    alert("Checked Out Successfully");
+  };
 
   if (!user) return null;
 
@@ -15,7 +34,25 @@ const Dashboard = () => {
           <h2>Welcome, {user.name}</h2>
 
           <h3>Role: {user.role}</h3>
+          <div className="attendance-actions">
+            <Button
+              variant="contained"
+              className="checkin-btn"
+              onClick={handleCheckIn}
+              disabled={isCheckedIn}
+            >
+              Check In
+            </Button>
 
+            <Button
+              variant="contained"
+              className="checkout-btn"
+              onClick={handleCheckOut}
+              disabled={!isCheckedIn}
+            >
+              Check Out
+            </Button>
+          </div>
           <Cards role={user.role} />
         </div>
       </div>

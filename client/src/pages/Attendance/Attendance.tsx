@@ -127,10 +127,11 @@ const Attendance = () => {
 
               </TableCell>
 
-              <TableCell align="center">
+              <TableCell align="center" className="attendance-radio-cell">
 
                 <RadioGroup
                   row
+                  className="attendance-radio-group"
                   value={attendance[employee.id] || ""}
                   onChange={(e) =>
                     handleAttendanceChange(

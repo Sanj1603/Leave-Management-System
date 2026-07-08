@@ -44,3 +44,28 @@
     align-items: flex-start;
     gap: 30px;
 }
+.attendance-actions {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0 30px;
+}
+
+.checkin-btn {
+    background-color: #1A3E7A !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+}
+
+.checkin-btn:hover {
+    background-color: #3966b4 !important;
+}
+
+.checkout-btn {
+    background-color: #1A3E7A !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+}
+
+.checkout-btn:hover {
+    background-color: #3966b4 !important;
+}

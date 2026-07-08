@@ -72,3 +72,18 @@
 .attendance-btn button:hover{
     background:#15325f;
 }
+.attendance-radio-cell {
+    vertical-align: top;
+    padding-top: 18px !important;
+}
+
+.attendance-radio-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+    gap: 12px;
+}
+
+.attendance-radio-group .MuiFormControlLabel-root {
+    margin: 0 10px;
+}
