@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
+
 
 const myLeaveHistory = [
   {
@@ -79,21 +81,87 @@ const LeaveHistory = () => {
     JSON.parse(sessionStorage.getItem("user") || "null");
 
   if (!user) return null;
+  const exportToExcel = () => {
+  let data: any[] = [];
+
+  if (user.role === "Employee") {
+    data = myLeaveHistory.map((leave) => ({
+      "Request ID": leave.id,
+      "Leave Type": leave.type,
+      From: leave.from,
+      To: leave.to,
+      Days: leave.days,
+      Status: leave.status,
+    }));
+  } else if (user.role === "Manager") {
+    data = employeeHistory.map((leave) => ({
+      Employee: leave.employee,
+      "Leave Type": leave.type,
+      From: leave.from,
+      To: leave.to,
+      Status: leave.status,
+    }));
+  } else if (user.role === "Admin") {
+    data = employeeHistory.map((leave) => ({
+      Employee: leave.employee,
+      Role: leave.role,
+      "Leave Type": leave.type,
+      From: leave.from,
+      To: leave.to,
+      Status: leave.status,
+    }));
+  }
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "Leave History"
+  );
+
+  XLSX.writeFile(workbook, "Leave_History.xlsx");
+};
 
   return (
     <Box sx={{ p: 4 }}>
       <Button
-        startIcon={<ArrowBackIcon />}
-        variant="outlined"
-        sx={{ mb: 3 }}
-        onClick={() => navigate("/dashboard")}
-      >
-        
-      </Button>
+  startIcon={<ArrowBackIcon />}
+  variant="outlined"
+  sx={{ mb: 3 }}
+  onClick={() => navigate("/dashboard")}
+>
+  Back
+</Button>
 
-      <Typography variant="h4" mb={4}>
-        Leave History
-      </Typography>
+<Box
+  sx={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    mb: 4,
+  }}
+>
+  <Typography variant="h4">
+    Leave History
+  </Typography>
+
+  <Button
+    variant="contained"
+    color="primary"
+    onClick={exportToExcel}
+    sx={{
+      textTransform: "none",
+      fontWeight: "bold",
+      px: 3,
+    }}
+  >
+    Export 
+  </Button>
+</Box>
 
       {/* Employee */}
       {user.role === "Employee" && (
@@ -106,24 +174,12 @@ const LeaveHistory = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <b>Request ID</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Leave Type</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>From</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>To</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Days</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Status</b>
-                  </TableCell>
+                  <TableCell><b>Request ID</b></TableCell>
+                  <TableCell><b>Leave Type</b></TableCell>
+                  <TableCell><b>From</b></TableCell>
+                  <TableCell><b>To</b></TableCell>
+                  <TableCell><b>Days</b></TableCell>
+                  <TableCell><b>Status</b></TableCell>
                 </TableRow>
               </TableHead>
 
@@ -167,24 +223,12 @@ const LeaveHistory = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <b>Request ID</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Leave Type</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>From</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>To</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Days</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Status</b>
-                  </TableCell>
+                  <TableCell><b>Request ID</b></TableCell>
+                  <TableCell><b>Leave Type</b></TableCell>
+                  <TableCell><b>From</b></TableCell>
+                  <TableCell><b>To</b></TableCell>
+                  <TableCell><b>Days</b></TableCell>
+                  <TableCell><b>Status</b></TableCell>
                 </TableRow>
               </TableHead>
 
