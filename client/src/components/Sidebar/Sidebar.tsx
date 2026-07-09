@@ -20,6 +20,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import './Sidebar.css';
 import type {  SidebarProps, SidebarItem } from "../../types";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
   {
@@ -52,6 +53,11 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: <AccountCircleIcon fontSize="small" />,
     roles: ['Employee', 'Manager', 'Admin'],
   },
+  {
+  text: "Leave Settings",
+  icon: <SettingsIcon fontSize="small" />,
+  roles: ["Admin"],
+},
   
 {
   text: 'Attendance',
@@ -134,6 +140,11 @@ if (item.text === "Logout") {
     case "Users / Profile":
       navigate("/profile");
       break;
+
+      case "Leave Settings":
+  navigate("/leave-settings");
+  break;
+  
     case "Company Calendar":
       navigate("/company-calendar");
       break;

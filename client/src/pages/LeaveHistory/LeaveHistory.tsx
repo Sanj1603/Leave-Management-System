@@ -138,6 +138,8 @@ const LeaveHistory = () => {
 
 <Box
   sx={{
+
+    
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",

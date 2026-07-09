@@ -41,3 +41,10 @@ export interface MockUser {
   address:string;
   department: string;
 }
+
+
+export interface LeaveType {
+  id: number;
+  leaveType: string;
+  totalLeaves: number;
+}

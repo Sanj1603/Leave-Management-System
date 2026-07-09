@@ -11,6 +11,8 @@ import ViewRequests from "./components/ViewRequests/ViewRequests";
 import Attendance from "./pages/Attendance/Attendance";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import LeaveSettings from "./pages/LeaveSettings/LeaveSettings";
+
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/company-calendar" element={<CompanyCalendar />} />
         <Route path="/view-requests" element={<ViewRequests />} />
+        <Route path="/leave-settings" element={<LeaveSettings />} />
       </Route>
     </Routes>
   );

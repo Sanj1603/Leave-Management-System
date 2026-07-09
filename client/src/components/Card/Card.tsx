@@ -12,22 +12,23 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import type {  CardProps } from "../../types";
 
-// interface CardProps {
-//   role: string;
-// }
 
 const leaveData = {
   Employee: {
     casual: 6,
     earned: 14,
+    Sick : 15,
+
   },
   Manager: {
     casual: 8,
     earned: 18,
+    Sick  : 15,
   },
   Admin: {
     casual: 10,
     earned: 20,
+    Sick  : 15,
   },
 };
 
@@ -43,6 +44,7 @@ const Cards = ({ role }: CardProps) => {
             <Typography variant="h6">
               Casual Leaves
             </Typography>
+
 
             <EventAvailableIcon color="primary" />
           </Box>
@@ -78,6 +80,31 @@ const Cards = ({ role }: CardProps) => {
             sx={{ mt: 3 }}
           >
             {data.earned}
+          </Typography>
+
+          <Typography color="text.secondary">
+            Available
+          </Typography>
+        </CardContent>
+      </Card>
+
+
+  <Card className="dashboardCard">
+        <CardContent>
+          <Box className="cardHeader">
+            <Typography variant="h6">
+              Sick Leaves
+            </Typography>
+
+            <EventAvailableIcon color="primary" />
+          </Box>
+
+          <Typography
+            variant="h3"
+            color="primary"
+            sx={{ mt: 3 }}
+          >
+            {data.Sick}
           </Typography>
 
           <Typography color="text.secondary">

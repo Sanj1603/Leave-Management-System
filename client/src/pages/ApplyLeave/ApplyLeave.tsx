@@ -17,7 +17,8 @@ const leaveTypes = [
   "Casual Leave",
   "Sick Leave",
   "Earned Leave",
-  "Work From Home",
+  // 
+  
 ];
 
 const ApplyLeave = () => {
