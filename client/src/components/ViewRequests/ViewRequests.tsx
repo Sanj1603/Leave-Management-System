@@ -49,7 +49,7 @@ const requestData = [
   },
   {
     id: "EMP003",
-    name: "Alex Kumar",
+    name: "Samhitha S Roa",
     department: "Finance",
     leaveType: "Earned Leave",
     fromDate: "25-Jul-2026",

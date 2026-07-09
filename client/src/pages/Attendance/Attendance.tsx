@@ -1,196 +1,31 @@
-import { useState } from "react";
-import {
-  Paper,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Button,
-} from "@mui/material";
-import { mockUsers } from "../../mock/users";
 import "./Attendance.css";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom";
 
-const employees = mockUsers;
-
+import AttendanceFilters from "./AttendanceFilters";
+import EmployeeCard from "./EmployeeCard";
+import AttendanceSummary from "./AttendanceSummary";
+import AttendanceTable from "./AttendanceTable";
+import AttendanceLegend from "./AttendanceLegend";
 
 const Attendance = () => {
-   const navigate = useNavigate();
-  const [attendance, setAttendance] = useState<Record<number, string>>({});
 
+    return (
 
-  const handleAttendanceChange = (
-    id: number,
-    value: string
-  ) => {
-    setAttendance((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
+        <div className="attendance-page">
 
-  const handleSave = () => {
-    console.log(attendance);
+            <AttendanceFilters />
 
-    alert("Attendance saved successfully (Mock)");
-  };
+            <EmployeeCard />
 
-  return (
-  <Paper elevation={2} className="attendance-card">
-     <Button
-  startIcon={<ArrowBackIcon />}
-  variant="outlined"
-  sx={{ mb: 2 }}
-  onClick={() => navigate("/dashboard")}
->
-</Button>
+            <AttendanceSummary />
 
-    <div className="attendance-header">
+            <AttendanceTable />
 
-      <div>
-        <Typography variant="h4" className="attendance-title">
-          Attendance
-        </Typography>
+            <AttendanceLegend />
 
-        <Typography className="attendance-subtitle">
-          Mark attendance for employees
-        </Typography>
-      </div>
+        </div>
 
-      <Typography className="attendance-date">
-        {new Date().toLocaleDateString()}
-      </Typography>
+    );
 
-    </div>
-
-    <TableContainer>
-
-      <Table>
-
-        <TableHead className="attendance-table-head">
-
-          <TableRow>
-
-            <TableCell><b>Employee ID</b></TableCell>
-
-            <TableCell><b>Employee Name</b></TableCell>
-
-            <TableCell><b>Department</b></TableCell>
-
-            <TableCell><b>Status</b></TableCell>
-
-            <TableCell align="center">
-              <b>Attendance</b>
-            </TableCell>
-
-          </TableRow>
-
-        </TableHead>
-
-        <TableBody>
-
-          {employees.map((employee) => (
-
-            <TableRow
-              key={employee.id}
-              hover
-            >
-
-              <TableCell>
-                EMP{String(employee.id).padStart(3, "0")}
-              </TableCell>
-
-              <TableCell>
-                {employee.name}
-              </TableCell>
-
-              <TableCell>
-                {employee.department}
-              </TableCell>
-
-              <TableCell>
-
-                {attendance[employee.id] ? (
-
-                  <span
-                    className={
-                      attendance[employee.id] === "Present"
-                        ? "status-present"
-                        : "status-absent"
-                    }
-                  >
-                    {attendance[employee.id]}
-                  </span>
-
-                ) : (
-
-                  <span className="status-pending">
-                    Not Marked
-                  </span>
-
-                )}
-
-              </TableCell>
-
-              <TableCell align="center" className="attendance-radio-cell">
-
-                <RadioGroup
-                  row
-                  className="attendance-radio-group"
-                  value={attendance[employee.id] || ""}
-                  onChange={(e) =>
-                    handleAttendanceChange(
-                      employee.id,
-                      e.target.value
-                    )
-                  }
-                >
-
-                  <FormControlLabel
-                    value="Present"
-                    control={<Radio />}
-                    label="Present"
-                  />
-
-                  <FormControlLabel
-                    value="Absent"
-                    control={<Radio />}
-                    label="Absent"
-                  />
-
-                </RadioGroup>
-
-              </TableCell>
-
-            </TableRow>
-
-          ))}
-
-        </TableBody>
-
-      </Table>
-
-    </TableContainer>
-
-    <div className="attendance-btn">
-
-      <Button
-        variant="contained"
-        onClick={handleSave}
-      >
-        Save Attendance
-      </Button>
-
-    </div>
-
-  </Paper>
-);
 };
+
 export default Attendance;

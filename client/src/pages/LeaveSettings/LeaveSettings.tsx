@@ -22,8 +22,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import type { LeaveType} from "../../types";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
+
+
 
 const LeaveSettings = () => {
+  const navigate = useNavigate();
   const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([
     {
       id: 1,
@@ -103,6 +108,14 @@ const LeaveSettings = () => {
 
   return (
     <Box p={4}>
+      <Button
+  startIcon={<ArrowBackIcon />}
+  variant="outlined"
+  sx={{ mb: 2 }}
+  onClick={() => navigate("/dashboard")}
+>
+</Button>
+
       <Box
         display="flex"
         justifyContent="space-between"

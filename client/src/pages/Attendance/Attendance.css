@@ -1,125 +1,64 @@
-.attendance-card{
+.attendance-page{
     padding:30px;
+    background:#f4f6f9;
+    min-height:100vh;
+}
+
+.MuiCard-root{
     border-radius:12px !important;
 }
 
-.attendance-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
+.MuiTableContainer-root{
+    border-radius:10px;
 }
 
-.attendance-title{
-    color:#1A3E7A;
-    font-weight:700 !important;
+.MuiTableHead-root .MuiTableCell-root{
+    background:#f3f4f6;
+    font-weight:700;
 }
 
-.attendance-subtitle{
-    color:#6b7280;
-    margin-top:5px !important;
+.MuiTableCell-root{
+    white-space:nowrap;
 }
 
-.attendance-date{
-    color:#6b7280;
-    font-size:15px !important;
+.MuiChip-root{
+    font-weight:600;
 }
 
-.attendance-table-head{
-    background:#f5f7fa;
+.MuiButton-root{
+    text-transform:none !important;
+    font-weight:600 !important;
 }
 
-/* Make table headers slightly bolder */
-.attendance-table-head th{
-    font-weight:700 !important;
-    color:#1A3E7A;
+.MuiAvatar-root{
+    border:3px solid #1976d2;
 }
 
-/* Add a little padding to rows */
-.MuiTableBody-root .MuiTableRow-root{
-    height:70px;
+::-webkit-scrollbar{
+    height:10px;
 }
 
-/* Hover effect */
-.MuiTableBody-root .MuiTableRow-root:hover{
-    background:#fafafa;
-}
-
-/* Status badges */
-
-.status-present{
-    background:#d4edda;
-    color:#155724;
-    padding:6px 14px;
+::-webkit-scrollbar-thumb{
+    background:#c7c7c7;
     border-radius:20px;
-    font-size:13px;
-    font-weight:600;
 }
 
-.status-absent{
-    background:#f8d7da;
-    color:#721c24;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
+::-webkit-scrollbar-track{
+    background:#efefef;
 }
 
-.status-pending{
-    background:#ececec;
-    color:#666;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
+@media(max-width:1200px){
+
+    .attendance-page{
+        padding:20px;
+    }
+
 }
 
-/* Attendance radio buttons */
+@media(max-width:768px){
 
-.attendance-radio-cell{
-    vertical-align:top;
-    padding-top:18px !important;
-    justify-content: flex-end;
-}
+    .attendance-page{
+        padding:15px;
+    }
 
-.attendance-radio-group{
-    display: flex;
-    justify-content: flex-start;
-    padding-left: 55px;   /* Increase from 35px */
-    gap: 18px;
-}
-
-.attendance-radio-group .MuiFormControlLabel-root{
-    margin:0;
-}
-
-/* Save Button */
-.checkin-btn.Mui-disabled {
-    background-color: #81c784 !important;
-    color: #ffffff !important;
-    opacity: 0.75;
-}
-
-.checkout-btn.Mui-disabled {
-    background-color: #90caf9 !important;
-    color: #ffffff !important;
-    opacity: 0.75;
-}
-
-.attendance-btn{
-    display:flex;
-    justify-content:flex-end;
-    margin-top:30px;
-}
-
-.attendance-btn button{
-    background:#4F7ECF;
-    text-transform:none;
-    border-radius:8px;
-    padding:10px 26px;
-    font-weight:600;
-}
-
-.attendance-btn button:hover{
-    background:#3E6FBE;
 }

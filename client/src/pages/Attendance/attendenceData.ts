@@ -1,0 +1,93 @@
+export const employee = {
+  id: "EMP1001",
+  name: "Sanjana N",
+  designation: "Software Engineer",
+  department: "Development",
+  location: "Mysore",
+  joiningDate: "8 JULY 2026",
+  image:
+    "https://i.pravatar.cc/150?img=12",
+};
+
+export const summary = {
+  present: 21,
+  leave: 3,
+  absent: 2,
+  halfDay: 1,
+  weeklyOff: 8,
+  totalDays: 31,
+};
+
+export const attendance = [
+  {
+    day: 1,
+    week: "Wed",
+    status: "P",
+    inTime: "09:05",
+    outTime: "18:05",
+    working: "9.00",
+    ot: "-",
+    remarks: "NA",
+  },
+  {
+    day: 2,
+    week: "Thu",
+    status: "P",
+    inTime: "09:02",
+    outTime: "18:10",
+    working: "9.08",
+    ot: "-",
+    remarks: "",
+  },
+  {
+    day: 3,
+    week: "Fri",
+    status: "P",
+    inTime: "09:10",
+    outTime: "18:07",
+    working: "8.57",
+    ot: "-",
+    remarks: "",
+  },
+  {
+    day: 4,
+    week: "Sat",
+    status: "WO",
+    inTime: "-",
+    outTime: "-",
+    working: "-",
+    ot: "-",
+    remarks: "",
+  },
+  {
+    day: 5,
+    week: "Sun",
+    status: "WO",
+    inTime: "-",
+    outTime: "-",
+    working: "-",
+    ot: "-",
+    remarks: "",
+  },
+  {
+    day: 6,
+    week: "Mon",
+    status: "L",
+    inTime: "-",
+    outTime: "-",
+    working: "-",
+    ot: "-",
+    remarks: "CL",
+  },
+  {
+    day: 7,
+    week: "Tue",
+    status: "P",
+    inTime: "09:00",
+    outTime: "18:00",
+    working: "9.00",
+    ot: "-",
+    remarks: "",
+  },
+];
+
