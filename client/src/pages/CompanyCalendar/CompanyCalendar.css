@@ -187,3 +187,46 @@
         padding: 8px;
     }
 }
+/* Previous month dates */
+.inactive-date {
+    background-color: #fafafa;
+    color: #c0c0c0;
+}
+
+/* Real-time past dates */
+.past-date {
+    background-color: #f3f4f6;
+    opacity: 0.7;
+}
+
+.past-date:hover {
+    background-color: #f3f4f6;
+    cursor: default;
+}
+
+/* Past date numbers */
+.past-date-number {
+    color: #9ca3af !important;
+}
+
+/* Today's date */
+.today-date {
+    background: #4F7ECF;
+    color: #ffffff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Future dates */
+.calendar-cell {
+    transition: all 0.2s ease;
+}
+
+.calendar-cell:not(.past-date):hover {
+    background: #eef4ff;
+    cursor: pointer;
+}

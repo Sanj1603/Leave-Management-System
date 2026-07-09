@@ -9,6 +9,8 @@ import {
   isSameMonth,
   isSameDay,
   isToday,
+  isBefore,
+  startOfDay,
 } from "date-fns";
 
 import {
@@ -99,10 +101,13 @@ const CompanyCalendar: React.FC = () => {
   };
 
   const handleDateClick = (date: Date) => {
-    if (role === "Admin") {
-      setSelectedDate(date);
-    }
-  };
+  if (
+    role === "Admin" &&
+    !isBefore(date, today)
+  ) {
+    setSelectedDate(date);
+  }
+};
 
   const handleAddHoliday = () => {
     if (!selectedDate || !holidayName.trim()) {
@@ -137,7 +142,7 @@ const CompanyCalendar: React.FC = () => {
     setSelectedDate(null);
     setHolidayName("");
   };
-
+  const today = startOfDay(new Date());
   return (
     <Box className="company-calendar-page">
       <Button
@@ -212,18 +217,32 @@ const CompanyCalendar: React.FC = () => {
                 onClick={() =>
                   handleDateClick(day)
                 }
-                className={`calendar-cell ${
-                  !isSameMonth(day, monthStart)
-                    ? "inactive-date"
-                    : ""
-                }`}
+                className={`calendar-cell
+                      ${
+                        !isSameMonth(day, monthStart)
+                          ? "inactive-date"
+                          : ""
+                      }
+                      ${
+                        isBefore(day, today)
+                          ? "past-date"
+                          : ""
+                      }
+                    `}
               >
                 <div
-                  className={`date-number ${
-                    isToday(day)
-                      ? "today-date"
-                      : ""
-                  }`}
+                  className={`date-number
+                    ${
+                      isToday(day)
+                        ? "today-date"
+                        : ""
+                    }
+                    ${
+                      isBefore(day, today)
+                        ? "past-date-number"
+                        : ""
+                    }
+                  `}
                 >
                   {format(day, "d")}
                 </div>
