@@ -15,7 +15,7 @@ namespace server.Models
         public int RemainingLeaves { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
-        public User Employee { get; set; } = null!;
+        public User User { get; set; } = null!;
 
         [ForeignKey(nameof(LeaveTypeId))]
         public LeaveType LeaveType { get; set; } = null!;

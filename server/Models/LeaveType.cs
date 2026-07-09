@@ -9,7 +9,7 @@ namespace server.Models
 
         [Required]
         [MaxLength(50)]
-        public string TypeName { get; set; } = string.Empty;
+        public string LeaveTypeName { get; set; } = string.Empty;
 
         [Required]
         public int AllocatedLeaves { get; set; }
