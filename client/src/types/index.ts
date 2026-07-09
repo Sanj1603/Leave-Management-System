@@ -40,6 +40,8 @@ export interface MockUser {
   phone: string;
   address:string;
   department: string;
+  designation: string;
+  DateOfJoining: string;
 }
 
 

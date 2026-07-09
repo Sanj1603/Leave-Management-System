@@ -5,28 +5,27 @@ namespace server.Models
 {
     public class Attendance
     {
+        
         [Key]
         public int AttendanceId { get; set; }
 
-        public int EmployeeId { get; set; }
+    public int UserId { get; set; }
 
-        public DateOnly AttendanceDate { get; set; }
+    public DateOnly AttendanceDate { get; set; }
 
-        public TimeOnly? CheckIn { get; set; }
+    public TimeOnly? CheckInTime { get; set; }
 
-        public TimeOnly? CheckOut { get; set; }
+    public TimeOnly? CheckOutTime { get; set; }
 
-        public decimal? WorkingHours { get; set; }
+    public double WorkingHours { get; set; }
 
-        public decimal? OTHours { get; set; }
+    public double OvertimeHours { get; set; }
 
-        [MaxLength(20)]
-        public string Status { get; set; } = "Present";
+    public string Status { get; set; } = string.Empty;
 
-        [MaxLength(255)]
-        public string? Remarks { get; set; }
+    public string? Remarks { get; set; }
 
-        [ForeignKey(nameof(EmployeeId))]
-        public User Employee { get; set; } = null!;
+    public User User { get; set; } = null!;
+
     }
 }

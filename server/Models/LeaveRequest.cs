@@ -3,42 +3,39 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace server.Models
 {
-    public class LeaveRequest
-    {
-        [Key]
-        public int LeaveId { get; set; }
+   public class LeaveRequest
+{
+    public int LeaveRequestId { get; set; }
 
-        public int EmployeeId { get; set; }
+    public int UserId { get; set; }
 
-        public int LeaveTypeId { get; set; }
+    public int LeaveTypeId { get; set; }
 
-        [Required]
-        public DateOnly StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
 
-        [Required]
-        public DateOnly EndDate { get; set; }
+    public DateOnly EndDate { get; set; }
 
-        public decimal Days { get; set; }
+    public double NumberOfDays { get; set; }
 
-        [MaxLength(500)]
-        public string Reason { get; set; } = string.Empty;
+    public string LeaveDuration { get; set; } = string.Empty;
 
-        [MaxLength(20)]
-        public string Status { get; set; } = "Pending";
+    // Employee's reason for requesting leave
+    public string Reason { get; set; } = string.Empty;
 
-        public int? ApprovedBy { get; set; }
+    // Pending / Approved / Rejected
+    public string Status { get; set; } = "Pending";
 
-        public DateTime AppliedAt { get; set; } = DateTime.UtcNow;
+    // Manager's comments when approving/rejecting
+    public string? ManagerRemarks { get; set; }
 
-        public DateTime? DecisionAt { get; set; }
+    // Optional: who approved/rejected the request
+    public int? ApprovedBy { get; set; }
 
-        [ForeignKey(nameof(EmployeeId))]
-        public User Employee { get; set; } = null!;
+    // Optional: when the action was taken
+    public DateTime? ActionDate { get; set; }
 
-        [ForeignKey(nameof(LeaveTypeId))]
-        public LeaveType LeaveType { get; set; } = null!;
+    public User User { get; set; } = null!;
 
-        [ForeignKey(nameof(ApprovedBy))]
-        public User? Approver { get; set; }
-    }
+    public LeaveType LeaveType { get; set; } = null!;
+}
 }
