@@ -12,6 +12,7 @@ import Attendance from "./pages/Attendance/Attendance";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import LeaveSettings from "./pages/LeaveSettings/LeaveSettings";
+import EmployeeAttendance from "./pages/EmployeeAttendance/EmployeeAttendance";
 
 
 function App() {
@@ -32,6 +33,10 @@ function App() {
         <Route path="/notification" element={<Notification />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/attendance" element={<Attendance />} />
+        <Route
+  path="/employee-attendance"
+  element={<EmployeeAttendance />}
+/>
         <Route path="/company-calendar" element={<CompanyCalendar />} />
         <Route path="/view-requests" element={<ViewRequests />} />
         <Route path="/leave-settings" element={<LeaveSettings />} />

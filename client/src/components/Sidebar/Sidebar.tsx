@@ -65,6 +65,11 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   roles: ['Employee','Manager', 'Admin'],
 },
 {
+  text: 'Employee Attendance',
+  icon: <FactCheckIcon fontSize="small" />,
+  roles: ['Manager', 'Admin'],
+},
+{
   text: 'Company Calendar',
   icon: <CalendarMonthIcon fontSize="small" />,
   roles: ['Employee', 'Manager', 'Admin'],
@@ -125,8 +130,12 @@ if (item.text === "Logout") {
       navigate("/leave-history");
       break;
     
-    case "Attendance":
+      case "Attendance":
       navigate("/attendance");
+      break;
+
+      case "Employee Attendance":
+      navigate("/employee-attendance");
       break;
 
     case "View Requests":
