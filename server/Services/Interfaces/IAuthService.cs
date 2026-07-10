@@ -1,8 +1,8 @@
-using server.DTOs;
+using server.DTOs.Auth;
 
 namespace server.Services.Interfaces;
 
 public interface IAuthService
 {
-    Task<LoginResponseDto?> Login(LoginRequestDto request);
+    Task<LoginResponseDto?> LoginAsync(LoginRequestDto request);
 }

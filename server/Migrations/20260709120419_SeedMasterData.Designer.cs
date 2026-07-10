@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using server.Data;
@@ -11,9 +12,11 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260709120419_SeedMasterData")]
+    partial class SeedMasterData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -346,39 +349,6 @@ namespace server.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            DepartmentId = 1,
-                            Email = "admin@test.com",
-                            IsActive = true,
-                            Name = "Admin User",
-                            PasswordHash = "$2a$11$dIRcqLN9ra7kSjzxrk8.ZuAEaPHfo0i4PZL7ek8LyjI1Gx/XOgtsm",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            DepartmentId = 2,
-                            Email = "manager@test.com",
-                            IsActive = true,
-                            Name = "Jane Smith",
-                            PasswordHash = "$2a$11$Cg1Fem.NDJO/UtHAnOGLXOTm8I7tDnFC2gUHEApqvSl7UNJKFW0Au",
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            DepartmentId = 2,
-                            Email = "employee@test.com",
-                            IsActive = true,
-                            ManagerId = 2,
-                            Name = "John Doe",
-                            PasswordHash = "$2a$11$90gTurBEthchZx57oyM8Aed7r511ob.c1kIV/76ThFpQOCHxrhNXG",
-                            RoleId = 3
-                        });
                 });
 
             modelBuilder.Entity("server.Models.Attendance", b =>
