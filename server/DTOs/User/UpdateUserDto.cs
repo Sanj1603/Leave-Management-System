@@ -17,6 +17,13 @@ namespace server.DTOs.User
 
         public int RoleId { get; set; }
 
+        
+[Required]
+[MaxLength(100)]
+public string Designation { get; set; } = string.Empty;
+
+[Required]
+public DateOnly DateOfJoining { get; set; }
         public int DepartmentId { get; set; }
 
         public int? ManagerId { get; set; }

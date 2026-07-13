@@ -8,9 +8,9 @@ namespace server.Services.Interfaces
 
         Task<UserDto?> GetByIdAsync(int id);
 
-        Task<IEnumerable<ManagerDto>> GetManagersAsync();
-
         Task<IEnumerable<ManagerDto>> GetAdminsAsync();
+
+        Task<IEnumerable<ManagerDto>> GetManagersAsync();
 
         Task<UserDto> CreateAsync(CreateUserDto dto);
 

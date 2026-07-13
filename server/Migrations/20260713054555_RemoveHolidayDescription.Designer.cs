@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using server.Data;
@@ -11,9 +12,11 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260713054555_RemoveHolidayDescription")]
+    partial class RemoveHolidayDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,10 +304,6 @@ namespace server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
-
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
@@ -327,11 +326,6 @@ namespace server.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
@@ -361,7 +355,6 @@ namespace server.Migrations
                             IsActive = true,
                             Name = "Admin User",
                             PasswordHash = "$2a$11$dIRcqLN9ra7kSjzxrk8.ZuAEaPHfo0i4PZL7ek8LyjI1Gx/XOgtsm",
-                            PhoneNumber = "",
                             RoleId = 1
                         },
                         new
@@ -372,7 +365,6 @@ namespace server.Migrations
                             IsActive = true,
                             Name = "Jane Smith",
                             PasswordHash = "$2a$11$Cg1Fem.NDJO/UtHAnOGLXOTm8I7tDnFC2gUHEApqvSl7UNJKFW0Au",
-                            PhoneNumber = "",
                             RoleId = 2
                         },
                         new
@@ -384,7 +376,6 @@ namespace server.Migrations
                             ManagerId = 2,
                             Name = "John Doe",
                             PasswordHash = "$2a$11$90gTurBEthchZx57oyM8Aed7r511ob.c1kIV/76ThFpQOCHxrhNXG",
-                            PhoneNumber = "",
                             RoleId = 3
                         });
                 });

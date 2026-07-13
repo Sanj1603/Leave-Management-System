@@ -29,6 +29,13 @@ namespace server.Models
 
         public bool IsActive { get; set; } = true;
 
+[Required]
+[MaxLength(100)]
+public string Designation { get; set; } = string.Empty;
+
+[Required]
+public DateOnly DateOfJoining { get; set; }
+
         // Foreign Keys
         public int RoleId { get; set; }
 

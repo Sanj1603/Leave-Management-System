@@ -1,5 +1,7 @@
+using AutoMapper;
 using BCrypt.Net;
 using server.DTOs.User;
+using server.Helpers;
 using server.Models;
 using server.Repositories.Interfaces;
 using server.Services.Interfaces;
@@ -11,186 +13,79 @@ namespace server.Services
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMapper _mapper;
 
         public UserService(
             IUserRepository userRepository,
             IRoleRepository roleRepository,
-            IDepartmentRepository departmentRepository)
+            IDepartmentRepository departmentRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _departmentRepository = departmentRepository;
+            _mapper = mapper;
         }
-        public async Task<UserDto> CreateAsync(CreateUserDto dto)
-{
-    // 1. Email validation
-    if (await _userRepository.EmailExistsAsync(dto.Email))
-        throw new Exception("Email already exists.");
 
-    // 2. Validate Role
-    var role = await _roleRepository.GetByIdAsync(dto.RoleId)
-        ?? throw new Exception("Role not found.");
+        #region Private Validation Methods
 
-    // 3. Validate Department
-    var department = await _departmentRepository.GetByIdAsync(dto.DepartmentId)
-        ?? throw new Exception("Department not found.");
+        private async Task ValidateRoleAsync(int roleId)
+        {
+            if (!await _roleRepository.ExistsAsync(roleId))
+                throw new Exception("Invalid role selected.");
+        }
 
-    // 4. Validate hierarchy
-    await ValidateHierarchy(role.RoleName, dto.ManagerId);
+        private async Task ValidateDepartmentAsync(int departmentId)
+        {
+            if (!await _departmentRepository.ExistsAsync(departmentId))
+                throw new Exception("Invalid department selected.");
+        }
 
-    // 5. Create entity
-    var user = new User
-    {
-        Name = dto.Name,
-        Email = dto.Email,
-        PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-        PhoneNumber = dto.PhoneNumber,
-        Address = dto.Address,
-        RoleId = dto.RoleId,
-        DepartmentId = dto.DepartmentId,
-        ManagerId = dto.ManagerId,
-        IsActive = true
-    };
+        private async Task ValidateEmailAsync(string email)
+        {
+            if (await _userRepository.EmailExistsAsync(email))
+                throw new Exception("Email already exists.");
+        }
 
-    user = await _userRepository.CreateAsync(user);
+        private async Task ValidateHierarchyAsync(int roleId, int? managerId)
+        {
+            switch (roleId)
+            {
+                case RoleConstants.Admin:
 
-    // Reload with navigation properties
-    user = await _userRepository.GetByIdAsync(user.UserId)
-           ?? throw new Exception("User creation failed.");
+                    if (managerId != null)
+                        throw new Exception("Admin cannot have a manager.");
 
-    return MapToDto(user);
-}
-private async Task ValidateHierarchy(string roleName, int? managerId)
-{
-    switch (roleName)
-    {
-        case "Admin":
-            if (managerId != null)
-                throw new Exception("Admin cannot have a manager.");
-            break;
+                    break;
 
-        case "Manager":
-            if (managerId == null)
-                throw new Exception("Manager must report to an Admin.");
+                case RoleConstants.Manager:
 
-            var admin = await _userRepository.GetByIdAsync(managerId.Value);
+                    if (managerId == null)
+                        throw new Exception("Manager must report to an Admin.");
 
-            if (admin == null)
-                throw new Exception("Assigned Admin not found.");
+                    var admin = await _userRepository.GetByIdAsync(managerId.Value);
 
-            if (admin.Role.RoleName != "Admin")
-                throw new Exception("Manager can report only to an Admin.");
+                    if (admin == null || admin.RoleId != RoleConstants.Admin)
+                        throw new Exception("Manager must report to an Admin.");
 
-            break;
+                    break;
 
-        case "Employee":
-            if (managerId == null)
-                throw new Exception("Employee must report to a Manager.");
+                case RoleConstants.Employee:
 
-            var manager = await _userRepository.GetByIdAsync(managerId.Value);
+                    if (managerId == null)
+                        throw new Exception("Employee must report to a Manager.");
 
-            if (manager == null)
-                throw new Exception("Assigned Manager not found.");
+                    var manager = await _userRepository.GetByIdAsync(managerId.Value);
 
-            if (manager.Role.RoleName != "Manager")
-                throw new Exception("Employee can report only to a Manager.");
+                    if (manager == null || manager.RoleId != RoleConstants.Manager)
+                        throw new Exception("Employee must report to a Manager.");
 
-            break;
+                    break;
 
-        default:
-            throw new Exception("Invalid role.");
-    }
-}
-public async Task<IEnumerable<UserDto>> GetAllAsync()
-{
-    var users = await _userRepository.GetAllAsync();
+                default:
 
-    return users.Select(MapToDto);
-}
-public async Task<UserDto?> GetByIdAsync(int id)
-{
-    var user = await _userRepository.GetByIdAsync(id);
+                    throw new Exception("Invalid role.");
+            }
+        }
 
-    if (user == null)
-        return null;
-
-    return MapToDto(user);
-}
-public async Task<IEnumerable<ManagerDto>> GetManagersAsync()
-{
-    var managers = await _userRepository.GetManagersAsync();
-
-    return managers.Select(x => new ManagerDto
-    {
-        UserId = x.UserId,
-        Name = x.Name
-    });
-}
-public async Task<IEnumerable<ManagerDto>> GetAdminsAsync()
-{
-    var admins = await _userRepository.GetAdminsAsync();
-
-    return admins.Select(x => new ManagerDto
-    {
-        UserId = x.UserId,
-        Name = x.Name
-    });
-}
-public async Task<UserDto> UpdateAsync(int id, UpdateUserDto dto)
-{
-    var user = await _userRepository.GetByIdAsync(id)
-        ?? throw new Exception("User not found.");
-
-    var role = await _roleRepository.GetByIdAsync(dto.RoleId)
-        ?? throw new Exception("Role not found.");
-
-    var department = await _departmentRepository.GetByIdAsync(dto.DepartmentId)
-        ?? throw new Exception("Department not found.");
-
-    await ValidateHierarchy(role.RoleName, dto.ManagerId);
-
-    user.Name = dto.Name;
-    user.PhoneNumber = dto.PhoneNumber;
-    user.Address = dto.Address;
-    user.RoleId = dto.RoleId;
-    user.DepartmentId = dto.DepartmentId;
-    user.ManagerId = dto.ManagerId;
-    user.IsActive = dto.IsActive;
-
-    user = await _userRepository.UpdateAsync(user);
-
-    user = await _userRepository.GetByIdAsync(user.UserId)
-           ?? throw new Exception("User update failed.");
-
-    return MapToDto(user);
-}
-public async Task DeactivateAsync(int id)
-{
-    var user = await _userRepository.GetByIdAsync(id)
-        ?? throw new Exception("User not found.");
-
-    await _userRepository.DeactivateAsync(user);
-}
-private static UserDto MapToDto(User user)
-{
-    return new UserDto
-    {
-        UserId = user.UserId,
-        Name = user.Name,
-        Email = user.Email,
-        PhoneNumber = user.PhoneNumber,
-        Address = user.Address,
-        IsActive = user.IsActive,
-
-        RoleId = user.RoleId,
-        RoleName = user.Role?.RoleName ?? string.Empty,
-
-        DepartmentId = user.DepartmentId,
-        DepartmentName = user.Department?.DepartmentName ?? string.Empty,
-
-        ManagerId = user.ManagerId,
-        ManagerName = user.Manager?.Name
-    };
-}
-    }
-}
+        #endregi

@@ -12,6 +12,10 @@ namespace server.DTOs.User
 
         public string? Address { get; set; }
 
+        public string Designation { get; set; } = string.Empty;
+
+        public DateOnly DateOfJoining { get; set; }
+
         public bool IsActive { get; set; }
 
         public int RoleId { get; set; }

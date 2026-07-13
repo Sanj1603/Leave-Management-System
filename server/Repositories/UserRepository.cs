@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using server.Data;
+using server.Helpers;
 using server.Models;
 using server.Repositories.Interfaces;
 
@@ -17,51 +18,85 @@ namespace server.Repositories
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _context.Users
-                .Include(x => x.Role)
-                .Include(x => x.Department)
-                .Include(x => x.Manager)
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .OrderBy(u => u.Name)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetActiveUsersAsync()
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .Where(u => u.IsActive)
+                .OrderBy(u => u.Name)
                 .ToListAsync();
         }
 
         public async Task<User?> GetByIdAsync(int id)
         {
             return await _context.Users
-                .Include(x => x.Role)
-                .Include(x => x.Department)
-                .Include(x => x.Manager)
-                .FirstOrDefaultAsync(x => x.UserId == id);
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .FirstOrDefaultAsync(u => u.UserId == id);
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.Users
-                .Include(x => x.Role)
-                .Include(x => x.Department)
-                .Include(x => x.Manager)
-                .FirstOrDefaultAsync(x => x.Email == email);
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<IEnumerable<User>> GetAdminsAsync()
         {
             return await _context.Users
-                .Include(x => x.Role)
-                .Where(x => x.Role.RoleName == "Admin" && x.IsActive)
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == 1 && u.IsActive)
+                .OrderBy(u => u.Name)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<User>> GetManagersAsync()
         {
             return await _context.Users
-                .Include(x => x.Role)
-                .Where(x => x.Role.RoleName == "Manager" && x.IsActive)
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == 2 && u.IsActive)
+                .OrderBy(u => u.Name)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<User>> GetEmployeesAsync()
         {
             return await _context.Users
-                .Include(x => x.Role)
-                .Where(x => x.Role.RoleName == "Employee" && x.IsActive)
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == 3 && u.IsActive)
+                .OrderBy(u => u.Name)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetByManagerIdAsync(int managerId)
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .Where(u => u.ManagerId == managerId && u.IsActive)
+                .OrderBy(u => u.Name)
                 .ToListAsync();
         }
 
@@ -82,24 +117,32 @@ namespace server.Repositories
         }
 
         public async Task DeactivateAsync(User user)
-{
-    user.IsActive = false;
+        {
+            user.IsActive = false;
 
-    _context.Users.Update(user);
+            _context.Users.Update(user);
 
-    await _context.SaveChangesAsync();
-}
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<bool> EmailExistsAsync(string email)
         {
             return await _context.Users
-                .AnyAsync(x => x.Email == email);
+                .AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<bool> EmailExistsAsync(string email, int excludeUserId)
+        {
+            return await _context.Users
+                .AnyAsync(u =>
+                    u.Email == email &&
+                    u.UserId != excludeUserId);
         }
 
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Users
-                .AnyAsync(x => x.UserId == id);
+                .AnyAsync(u => u.UserId == id);
         }
     }
 }

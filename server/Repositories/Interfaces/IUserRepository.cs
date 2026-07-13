@@ -25,5 +25,8 @@ namespace server.Repositories.Interfaces
         Task<bool> EmailExistsAsync(string email);
 
         Task<bool> ExistsAsync(int id);
+        Task<IEnumerable<User>> GetByManagerIdAsync(int managerId);
+        Task<IEnumerable<User>> GetActiveUsersAsync();
+        Task<bool> EmailExistsAsync(string email, int excludeUserId);
     }
 }
