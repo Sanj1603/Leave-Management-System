@@ -4,26 +4,37 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using server.Data;
 using server.Helpers;
+using server.Mappings;
 using server.Repositories;
 using server.Repositories.Interfaces;
 using server.Services;
 using server.Services.Interfaces;
 using System.Text;
-using server.Mappings;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// ==========================
+// Database
+// ==========================
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddEndpointsApiExplorer();
+
+// ==========================
+// AutoMapper
+// ==========================
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// ==========================
+// Swagger
+// ==========================
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -39,7 +50,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter JWT token only"
+        Description = "Enter JWT Token"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -49,8 +60,8 @@ builder.Services.AddSwaggerGen(options =>
             {
                 Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
                 }
             },
             Array.Empty<string>()
@@ -58,92 +69,122 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// --------------------
+// ==========================
 // JWT Authentication
-// --------------------
+// ==========================
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-
-        ),
-
-        ClockSkew = TimeSpan.Zero
-    };
-
-    options.Events = new JwtBearerEvents
-    {
-        OnAuthenticationFailed = context =>
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            Console.WriteLine(context.Exception.ToString());
-            return Task.CompletedTask;
-        },
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
 
-        OnChallenge = context =>
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+
+            ClockSkew = TimeSpan.Zero
+        };
+
+        options.Events = new JwtBearerEvents
         {
-            Console.WriteLine($"Challenge: {context.Error} {context.ErrorDescription}");
-            return Task.CompletedTask;
-        }
-    };
-});
-builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine(context.Exception);
+                return Task.CompletedTask;
+            },
 
-builder.Services.AddScoped<IHolidayService, HolidayService>();
+            OnChallenge = context =>
+            {
+                Console.WriteLine($"{context.Error} {context.ErrorDescription}");
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+// ==========================
+// Authorization
+// ==========================
+
 builder.Services.AddAuthorization();
 
-
-// --------------------
+// ==========================
 // Dependency Injection
-// --------------------
+// ==========================
 
+// User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddScoped<IAuthService, AuthService>();
+// Role
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+
+// Department
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
+// Holiday
+builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
+builder.Services.AddScoped<IHolidayService, HolidayService>();
+
+// Leave
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
 builder.Services.AddScoped<ILeaveService, LeaveService>();
+
+// Leave Type
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
 builder.Services.AddScoped<ILeaveTypeService, LeaveTypeService>();
+
+// Authentication
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// JWT Helper
 builder.Services.AddScoped<JwtTokenGenerator>();
+
+// ==========================
+// CORS
+// ==========================
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReact",
-        policy =>
-        {
-            policy
+    options.AddPolicy("AllowReact", policy =>
+    {
+        policy
             .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
-        });
+    });
 });
+
+// ==========================
+// Build App
+// ==========================
+
 var app = builder.Build();
 
-// --------------------
+// ==========================
 // Middleware
-// --------------------
+// ==========================
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors("AllowReact");
+
 app.UseAuthentication();
 
 app.UseAuthorization();

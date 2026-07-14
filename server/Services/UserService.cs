@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-using BCrypt.Net;
-using server.DTOs;
-=======
 using AutoMapper;
 using BCrypt.Net;
+using server.DTOs;
 using server.DTOs.User;
 using server.Helpers;
->>>>>>> d913bddf6e86c523d8d43a21c9b82bbf6a2440cc
 using server.Models;
 using server.Repositories.Interfaces;
 using server.Services.Interfaces;
@@ -15,39 +11,6 @@ namespace server.Services
 {
     public class UserService : IUserService
     {
-<<<<<<< HEAD
-        private readonly IUserRepository _repository;
-
-        public UserService(IUserRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<IEnumerable<UserDto>> GetAllAsync()
-        {
-            var users = await _repository.GetAllAsync();
-
-            return users.Select(u => new UserDto
-            {
-                UserId = u.UserId,
-                Name = u.Name,
-                Email = u.Email,
-                PhoneNumber = u.PhoneNumber,
-                Address = u.Address,
-                DateofJoining = u.DateofJoining,
-                ProfilePictureUrl = u.ProfilePictureUrl,
-                IsActive = u.IsActive,
-
-                RoleId = u.RoleId,
-                RoleName = u.Role?.RoleName ?? "",
-
-                DepartmentId = u.DepartmentId,
-                DepartmentName = u.Department?.DepartmentName ?? "",
-
-                ManagerId = u.ManagerId,
-                ManagerName = u.Manager?.Name
-            });
-=======
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IDepartmentRepository _departmentRepository;
@@ -64,37 +27,16 @@ namespace server.Services
             _departmentRepository = departmentRepository;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<ManagerDto>> GetManagersAsync()
-        {
-            var managers = await _userRepository.GetManagersAsync();
 
-            return _mapper.Map<IEnumerable<ManagerDto>>(managers);
-        }
-        public async Task<IEnumerable<ManagerDto>> GetAdminsAsync()
-        {
-            var admins = await _userRepository.GetAdminsAsync();
+        // ===========================
+        // Get All Users
+        // ===========================
 
-            return _mapper.Map<IEnumerable<ManagerDto>>(admins);
-        }
-
-        #region Private Validation Methods
         public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
             var users = await _userRepository.GetActiveUsersAsync();
 
-            return _mapper.Map<IEnumerable<UserDto>>(users);
->>>>>>> d913bddf6e86c523d8d43a21c9b82bbf6a2440cc
-        }
-
-        public async Task<UserDto?> GetByIdAsync(int id)
-        {
-<<<<<<< HEAD
-            var u = await _repository.GetByIdAsync(id);
-
-            if (u == null)
-                return null;
-
-            return new UserDto
+            return users.Select(u => new UserDto
             {
                 UserId = u.UserId,
                 Name = u.Name,
@@ -103,6 +45,8 @@ namespace server.Services
                 Address = u.Address,
                 DateofJoining = u.DateofJoining,
                 ProfilePictureUrl = u.ProfilePictureUrl,
+                Designation = u.Designation,
+
                 IsActive = u.IsActive,
 
                 RoleId = u.RoleId,
@@ -113,15 +57,83 @@ namespace server.Services
 
                 ManagerId = u.ManagerId,
                 ManagerName = u.Manager?.Name
+            });
+        }
+
+        // ===========================
+        // Get User By Id
+        // ===========================
+
+        public async Task<UserDto?> GetByIdAsync(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (user == null)
+                return null;
+
+            return new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                DateofJoining = user.DateofJoining,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                Designation = user.Designation,
+
+                IsActive = user.IsActive,
+
+                RoleId = user.RoleId,
+                RoleName = user.Role?.RoleName ?? "",
+
+                DepartmentId = user.DepartmentId,
+                DepartmentName = user.Department?.DepartmentName ?? "",
+
+                ManagerId = user.ManagerId,
+                ManagerName = user.Manager?.Name
             };
         }
 
-        public async Task CreateAsync(CreateUserDto dto)
-        {
-           var existingUser = await _repository.GetUserByEmailAsync(dto.Email);
+        // ===========================
+        // Get Managers
+        // ===========================
 
-            if (existingUser != null)
-                throw new Exception("Email already exists.");
+        public async Task<IEnumerable<ManagerDto>> GetManagersAsync()
+        {
+            var managers = await _userRepository.GetManagersAsync();
+
+            return managers.Select(x => new ManagerDto
+            {
+                UserId = x.UserId,
+                Name = x.Name
+            });
+        }
+
+        // ===========================
+        // Get Admins
+        // ===========================
+
+        public async Task<IEnumerable<ManagerDto>> GetAdminsAsync()
+        {
+            var admins = await _userRepository.GetAdminsAsync();
+
+            return admins.Select(x => new ManagerDto
+            {
+                UserId = x.UserId,
+                Name = x.Name
+            });
+        }
+                // ===========================
+        // Create User
+        // ===========================
+
+        public async Task<UserDto> CreateAsync(CreateUserDto dto)
+        {
+            await ValidateEmailAsync(dto.Email);
+            await ValidateRoleAsync(dto.RoleId);
+            await ValidateDepartmentAsync(dto.DepartmentId);
+            await ValidateHierarchyAsync(dto.RoleId, dto.ManagerId);
 
             var user = new User
             {
@@ -130,9 +142,10 @@ namespace server.Services
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
 
                 PhoneNumber = dto.PhoneNumber,
-                Address = dto.Address,
-                DateofJoining = dto.DateofJoining,
-                ProfilePictureUrl = dto.ProfilePictureUrl,
+                Address = dto.Address ?? string.Empty,
+                DateofJoining = dto.DateOfJoining.ToString("yyyy-MM-dd"),
+                ProfilePictureUrl = dto.ProfilePictureUrl ?? string.Empty,
+                Designation = dto.Designation,
 
                 RoleId = dto.RoleId,
                 DepartmentId = dto.DepartmentId,
@@ -141,118 +154,138 @@ namespace server.Services
                 IsActive = dto.IsActive
             };
 
-            await _repository.AddAsync(user);
-            await _repository.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(int id, UpdateUserDto dto)
-{
-    var user = await _repository.GetByIdAsync(id);
-
-    if (user == null)
-        throw new Exception("User not found.");
-
-    user.Name = dto.Name;
-    user.Email = dto.Email;
-    user.PhoneNumber = dto.PhoneNumber;
-    user.Address = dto.Address;
-    user.DateofJoining = dto.DateofJoining;
-    user.ProfilePictureUrl = dto.ProfilePictureUrl;
-
-    user.RoleId = dto.RoleId;
-    user.DepartmentId = dto.DepartmentId;
-    user.ManagerId = dto.ManagerId;
-
-    user.IsActive = dto.IsActive;
-
-    await _repository.UpdateAsync(user);
-    await _repository.SaveChangesAsync();
-}
-
-public async Task UpdateProfileAsync(int id, UpdateProfileDto dto)
-{
-    var user = await _repository.GetByIdAsync(id);
-
-    if (user == null)
-        throw new Exception("User not found.");
-
-    user.PhoneNumber = dto.PhoneNumber;
-    user.Address = dto.Address;
-    user.ProfilePictureUrl = dto.ProfilePictureUrl;
-
-    await _repository.UpdateAsync(user);
-    await _repository.SaveChangesAsync();
-}
-
-        public async Task DeleteAsync(int id)
-        {
-            var user = await _repository.GetByIdAsync(id);
-
-            if (user == null)
-                throw new Exception("User not found.");
-
-            await _repository.DeleteAsync(user);
-            await _repository.SaveChangesAsync();
-        }
-    }
-}
-=======
-            var user = await _userRepository.GetByIdAsync(id);
-
-            if (user == null)
-                return null;
-
-            return _mapper.Map<UserDto>(user);
-        }
-        public async Task<UserDto> CreateAsync(CreateUserDto dto)
-        {
-            await ValidateEmailAsync(dto.Email);
-            await ValidateRoleAsync(dto.RoleId);
-            await ValidateDepartmentAsync(dto.DepartmentId);
-            await ValidateHierarchyAsync(dto.RoleId, dto.ManagerId);
-            var user = _mapper.Map<User>(dto);
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-
-            user.IsActive = true;
-
             user = await _userRepository.CreateAsync(user);
 
             user = await _userRepository.GetByIdAsync(user.UserId)
                 ?? throw new Exception("Failed to retrieve created user.");
 
-            return _mapper.Map<UserDto>(user);
+            return new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                DateofJoining = user.DateofJoining,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                Designation = user.Designation,
+                IsActive = user.IsActive,
+
+                RoleId = user.RoleId,
+                RoleName = user.Role?.RoleName ?? "",
+
+                DepartmentId = user.DepartmentId,
+                DepartmentName = user.Department?.DepartmentName ?? "",
+
+                ManagerId = user.ManagerId,
+                ManagerName = user.Manager?.Name
+            };
         }
-public async Task<UserDto> UpdateAsync(int id, UpdateUserDto dto)
-{
-    if (dto.ManagerId == id)
-        throw new Exception("A user cannot be their own manager.");
 
-    var user = await _userRepository.GetByIdAsync(id)
-        ?? throw new Exception("User not found.");
+        // ===========================
+        // Update User (Admin)
+        // ===========================
 
-    await ValidateRoleAsync(dto.RoleId);
-    await ValidateDepartmentAsync(dto.DepartmentId);
-    await ValidateHierarchyAsync(dto.RoleId, dto.ManagerId);
+        public async Task<UserDto> UpdateAsync(int id, UpdateUserDto dto)
+        {
+            if (dto.ManagerId == id)
+                throw new Exception("A user cannot be their own manager.");
 
-    _mapper.Map(dto, user);
+            var user = await _userRepository.GetByIdAsync(id);
 
-    user = await _userRepository.UpdateAsync(user);
+            if (user == null)
+                throw new Exception("User not found.");
 
-    user = await _userRepository.GetByIdAsync(user.UserId)
-        ?? throw new Exception("Failed to retrieve updated user.");
+            await ValidateRoleAsync(dto.RoleId);
+            await ValidateDepartmentAsync(dto.DepartmentId);
+            await ValidateHierarchyAsync(dto.RoleId, dto.ManagerId);
 
-    return _mapper.Map<UserDto>(user);
-}
-public async Task DeactivateAsync(int id)
-{
-    var user = await _userRepository.GetByIdAsync(id);
+            user.Name = dto.Name;
+            user.Email = dto.Email;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.Address = dto.Address;
+            user.DateofJoining = dto.DateofJoining;
+            user.ProfilePictureUrl = dto.ProfilePictureUrl;
+            user.Designation = dto.Designation;
 
-    if (user == null)
-        throw new Exception("User not found.");
+            user.RoleId = dto.RoleId;
+            user.DepartmentId = dto.DepartmentId;
+            user.ManagerId = dto.ManagerId;
+            user.IsActive = dto.IsActive;
 
-    await _userRepository.DeactivateAsync(user);
-}
-#endregion
+            user = await _userRepository.UpdateAsync(user);
+
+            return new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                DateofJoining = user.DateofJoining,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                Designation = user.Designation,
+                IsActive = user.IsActive,
+
+                RoleId = user.RoleId,
+                RoleName = user.Role?.RoleName ?? "",
+
+                DepartmentId = user.DepartmentId,
+                DepartmentName = user.Department?.DepartmentName ?? "",
+
+                ManagerId = user.ManagerId,
+                ManagerName = user.Manager?.Name
+            };
+        }
+
+        // ===========================
+        // Update Profile
+        // ===========================
+
+        public async Task UpdateProfileAsync(int id, UpdateProfileDto dto)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            user.PhoneNumber = dto.PhoneNumber;
+            user.Address = dto.Address;
+            user.ProfilePictureUrl = dto.ProfilePictureUrl;
+
+            await _userRepository.UpdateAsync(user);
+        }
+
+        // ===========================
+        // Delete User
+        // ===========================
+
+        public async Task DeleteAsync(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            await _userRepository.DeleteAsync(user);
+        }
+
+        // ===========================
+        // Deactivate User
+        // ===========================
+
+        public async Task DeactivateAsync(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            await _userRepository.DeactivateAsync(user);
+        }
+                // ===========================
+        // Validation Methods
+        // ===========================
 
         private async Task ValidateRoleAsync(int roleId)
         {
@@ -308,11 +341,8 @@ public async Task DeactivateAsync(int id)
                     break;
 
                 default:
-
                     throw new Exception("Invalid role.");
             }
         }
     }
 }
-
->>>>>>> d913bddf6e86c523d8d43a21c9b82bbf6a2440cc
